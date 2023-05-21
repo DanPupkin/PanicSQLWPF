@@ -11,7 +11,6 @@ using CommunityToolkit.Mvvm.Input;
 using Model;
 using System.Windows;
 using System.Diagnostics;
-
 using CommunityToolkit.Common;
 using System.Collections.ObjectModel;
 using System.Runtime.CompilerServices;
@@ -23,8 +22,8 @@ namespace LogicLibrary
         public string login { get; set; }
         public string password { get; set; }
 
-        //public string[] LoginInfo { get; set; }
-        public ObservableCollection<Discipline> Disciplines { set; get; }
+         ObservableCollection<Discipline> disciplines { set; get; }
+        public ObservableCollection<Discipline> Disciplines { set { OnPropertyChanged("disp"); disciplines = value; } get { return disciplines; } }
         public (string[], int) AuthInfo { set; get; }
         public Student student { get; set; }
         SQLBaseControl control { get; set; } = new SQLBaseControl();
@@ -34,7 +33,8 @@ namespace LogicLibrary
             
             LoginCommand = new AsyncRelayCommand(LoginUserCommand);
             SQLLoadCommand = new AsyncRelayCommand(LoadCommand);
-            //var aboba = CommunityToolkit.Common.TaskExtensions.GetResultOrDefault(LoginUserCommand());
+            control = new SQLBaseControl();
+            //Disciplines = new ObservableCollection<Discipline> {new Discipline("Test", false) };
 
         }
 
@@ -49,23 +49,35 @@ namespace LogicLibrary
                 byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
                 byte[] hashBytes = md5.ComputeHash(inputBytes);
 
-                return Convert.ToHexString(hashBytes); // .NET 5 +
+                return Convert.ToHexString(hashBytes); 
 
             }
         }
 
-        //private ICommand loginCommand;
-        //public ICommand LoginCommand => loginCommand ?? (loginCommand = new RelayCommand(LoginButton));
-        public Action HideAction { get; set; }
+        
+        public Action CloseAction { get; set; }
         public IAsyncRelayCommand LoginCommand { get; }
 
         async private Task LoginUserCommand()
         {
-            HideAction();
-            //LoginInfo = await SQLBaseControl.Login(this.login, CreateMD5(this.password));
-            //Trace.WriteLine($"+++++++++++++++{LoginInfo}+++++++++++++");
-            AuthInfo = await SQLBaseControl.Login(this.login, CreateMD5(this.password));
-            //return new string[0]; // I d'nt know how to collect this result
+            
+            CloseAction();
+            AuthInfo = await control.Login(this.login, CreateMD5(this.password));
+            try 
+            { 
+                SQLLoadCommand.Execute(new object());// спорно, может стоит переделать
+            }
+            catch (Exception ex)
+            {
+                //нужно придумать задержку, чтобы поток не встал; нужно погуглить, как дожидаться окончания выполнения потока
+                //в данном проекте, проблем быть не должно, но с большой базой надо сглаживать этот угол
+                //оптимально до окончания выполения потока делать кнопки во view non-clickable 
+                //(я не уверен, что  LoadException вылетит здесь, надо будет дебажить)
+                Task.Delay(300).Wait();
+                SQLLoadCommand.Execute(new object());
+            }
+
+
         }
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")
@@ -79,9 +91,12 @@ namespace LogicLibrary
 
         async private Task LoadCommand()
         {
-            await control.ReadDisciplines(AuthInfo);
+            Disciplines = await control.ReadDisciplines(AuthInfo);
+            Trace.WriteLine(Disciplines[0].Name);
+            Disciplines[0].Status = false;
             
         }
+
 
     }
 }

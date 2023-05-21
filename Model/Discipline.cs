@@ -11,11 +11,13 @@ namespace Model
     public class Discipline: INotifyPropertyChanged
     {
         public string Name { get; set; }
-        public bool Status { get { return Status; } set { Status = value; OnPropertyChanged("Status"); } }
-        public Discipline(string student_login)
+        private bool status;
+        public bool Status { get { return status; } set { status = value; OnPropertyChanged("status"); } } //stackoverflow
+        public Discipline(string name, bool status)
 
         {
-
+            Name = name;
+            Status = status;
         }
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")

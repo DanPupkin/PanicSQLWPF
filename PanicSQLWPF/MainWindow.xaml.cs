@@ -45,9 +45,9 @@ namespace PanicSQLWPF_Windows
             this.Closing += Window_Closing;
 
 
-            if (auth.HideAction == null)
+            if (auth.CloseAction == null)
             {
-                auth.HideAction = new Action(authTab.Hide);
+                auth.CloseAction = new Action(authTab.Close);
             }
 
         }
