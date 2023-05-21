@@ -23,7 +23,6 @@ namespace PanicSQLWPF_Windows
     {
         public AuthTab()
         {
-
             InitializeComponent();
             AuthLogic vm = new AuthLogic();
             

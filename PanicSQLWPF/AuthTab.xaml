@@ -9,7 +9,7 @@
     <Grid>
         <TextBox x:Name="LoginBox" Text ="{Binding login}" Margin="0,71,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>
         <PasswordBox x:Name="PassBox" PasswordChanged="PassText_TextChanged" HorizontalAlignment="Center" Margin="0,115,0,0" VerticalAlignment="Top" Width="120"/>
-        <Button Content="Login" Command="{Binding LoginCommand}" HorizontalAlignment="Left" Margin="90,151,0,0" VerticalAlignment="Top"/>
+        <Button Content="Login" Command="{Binding LoginCommand}"  HorizontalAlignment="Left" Margin="90,151,0,0" VerticalAlignment="Top"/>
         <Button Content="Signup" HorizontalAlignment="Left" Margin="170,151,0,0" VerticalAlignment="Top"/>
 
     </Grid>

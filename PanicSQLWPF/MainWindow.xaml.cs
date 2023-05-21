@@ -13,6 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using LogicLibrary;
+using XamlAnimatedGif;
+using System.IO;
+
 
 namespace PanicSQLWPF_Windows
 {
@@ -22,16 +25,26 @@ namespace PanicSQLWPF_Windows
     public partial class MainWindow : Window
     {
         AuthTab authTab;
+        
         public MainWindow()
         {
             InitializeComponent();
-            Logic vm = new Logic();
+            //this.Hide();
+            
             AuthLogic auth = new AuthLogic();
             authTab = new AuthTab();
+            //studentsSystem = new StudentsSystem();
+            //studentsSystem.DataContext= vm;
+            //studentsSystem.Show();
             authTab.Show();
-            DataContext = vm;
+            DataContext = auth;
             authTab.DataContext = auth;
+
+            
+
             this.Closing += Window_Closing;
+
+
             if (auth.HideAction == null)
             {
                 auth.HideAction = new Action(authTab.Hide);
@@ -43,5 +56,7 @@ namespace PanicSQLWPF_Windows
             //authTab.Close();
             Application.Current.Shutdown();
         }
+
+        
     }
 }

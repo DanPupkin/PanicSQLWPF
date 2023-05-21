@@ -10,7 +10,11 @@ using CommunityToolkit.Mvvm;
 using CommunityToolkit.Mvvm.Input;
 using Model;
 using System.Windows;
+using System.Diagnostics;
 
+using CommunityToolkit.Common;
+using System.Collections.ObjectModel;
+using System.Runtime.CompilerServices;
 
 namespace LogicLibrary
 {
@@ -18,11 +22,19 @@ namespace LogicLibrary
     {
         public string login { get; set; }
         public string password { get; set; }
+
+        //public string[] LoginInfo { get; set; }
+        public ObservableCollection<Discipline> Disciplines { set; get; }
+        public (string[], int) AuthInfo { set; get; }
+        public Student student { get; set; }
+        SQLBaseControl control { get; set; } = new SQLBaseControl();
+
         public AuthLogic() 
         {
-
+            
             LoginCommand = new AsyncRelayCommand(LoginUserCommand);
-
+            SQLLoadCommand = new AsyncRelayCommand(LoadCommand);
+            //var aboba = CommunityToolkit.Common.TaskExtensions.GetResultOrDefault(LoginUserCommand());
 
         }
 
@@ -47,19 +59,30 @@ namespace LogicLibrary
         public Action HideAction { get; set; }
         public IAsyncRelayCommand LoginCommand { get; }
 
-        private Task<string[]> LoginUserCommand()
+        async private Task LoginUserCommand()
         {
             HideAction();
-            return SQLBaseControl.Login(this.login, CreateMD5(this.password));
+            //LoginInfo = await SQLBaseControl.Login(this.login, CreateMD5(this.password));
+            //Trace.WriteLine($"+++++++++++++++{LoginInfo}+++++++++++++");
+            AuthInfo = await SQLBaseControl.Login(this.login, CreateMD5(this.password));
+            //return new string[0]; // I d'nt know how to collect this result
         }
-        //public void OpenWindow(object mw)
-        //{
-        //    (Window)mw.Show();
-        //}
-        public void LoginButton()
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged([CallerMemberName] string prop = "")
         {
-
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
+
+
+        public IAsyncRelayCommand SQLLoadCommand { get; }
+
+        async private Task LoadCommand()
+        {
+            await control.ReadDisciplines(AuthInfo);
+            
+        }
+
     }
 }
     

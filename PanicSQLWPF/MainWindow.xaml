@@ -7,6 +7,15 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Button Command="{Binding SQLLoadCommand}" Content="Загрузить данные" HorizontalAlignment="Left" Margin="389,353,0,0" VerticalAlignment="Top" Height="44" Width="94"/>
+        <TextBox HorizontalAlignment="Left" Height="35" Margin="504,375,0,0" TextWrapping="Wrap" Text="{Binding login}" VerticalAlignment="Top" Width="256"/>
+        <ListView d:ItemsSource="{Binding Disciplines}" RenderTransformOrigin="0.498,0.498" Height="300" Width="300" Margin="23,31,477,103">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
 
     </Grid>
 </Window>
