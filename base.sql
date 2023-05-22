@@ -53,5 +53,5 @@ INSERT INTO matan (student_id, discipline_status)
 FROM students
 JOIN matan ON students.student_id = matan.student_id JOIN algebra ON students.student_id = algebra.student_id
 JOIN proga ON students.student_id = proga.student_id
-WHERE student_name = 'pavel';
+WHERE students.student_id = 1;
 SELECT student_name, password_md5 FROM students WHERE student_name = 'pavel' AND password_md5 = 'e10adc3949ba59abbe56e057f20f883e';

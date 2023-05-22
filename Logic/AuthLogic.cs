@@ -22,8 +22,8 @@ namespace LogicLibrary
         public string login { get; set; }
         public string password { get; set; }
 
-         ObservableCollection<Discipline> disciplines { set; get; }
-        public ObservableCollection<Discipline> Disciplines { set { OnPropertyChanged("disp"); disciplines = value; } get { return disciplines; } }
+        public ObservableCollection<Discipline> Disciplines { set; get; } = new ObservableCollection<Discipline>();
+       // public ObservableCollection<Discipline> Disciplines { set { OnPropertyChanged("disp"); disciplines = value; } get { return disciplines; } }
         public (string[], int) AuthInfo { set; get; }
         public Student student { get; set; }
         SQLBaseControl control { get; set; } = new SQLBaseControl();
@@ -91,10 +91,14 @@ namespace LogicLibrary
 
         async private Task LoadCommand()
         {
-            Disciplines = await control.ReadDisciplines(AuthInfo);
-            Trace.WriteLine(Disciplines[0].Name);
-            Disciplines[0].Status = false;
-            
+            ObservableCollection<Discipline> sub_Disciplines = await control.ReadDisciplines(AuthInfo);
+            foreach(var x in sub_Disciplines)
+            {
+                Disciplines.Add(x);
+            }
+
+
+
         }
 
 
