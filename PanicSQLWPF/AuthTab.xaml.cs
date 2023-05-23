@@ -12,7 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using LogicLibrary;
+using ViewModel;
 
 namespace PanicSQLWPF_Windows
 {
@@ -24,14 +24,14 @@ namespace PanicSQLWPF_Windows
         public AuthTab()
         {
             InitializeComponent();
-            AuthLogic vm = new AuthLogic();
+            StandartViewModel vm = new StandartViewModel();
             
             DataContext = vm;
         }
         private void LoginClick(object sender, EventArgs e)
         {
             string login = LoginBox.Text;
-            string password = AuthLogic.CreateMD5(PassBox.Password);
+            string password = StandartViewModel.CreateMD5(PassBox.Password);
 
 
         }

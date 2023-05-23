@@ -3,11 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PanicSQLWPF", "PanicSQLWPF\PanicSQLWPF.csproj", "{FE7F73BB-ECC4-436C-B028-B517A43B5360}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PanicSQLWPF", "PanicSQLWPF\PanicSQLWPF.csproj", "{FE7F73BB-ECC4-436C-B028-B517A43B5360}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic", "Logic\Logic.csproj", "{76773448-6E4A-455C-88E4-EAA9A52B08F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Model\Model.csproj", "{8EAE523F-AFBD-4E49-9223-9CA710F41897}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{8EAE523F-AFBD-4E49-9223-9CA710F41897}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewModel", "ViewModel\ViewModel.csproj", "{6DC3FDA2-7BA4-4185-AFD5-D51A5942C2A7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8EAE523F-AFBD-4E49-9223-9CA710F41897} = {8EAE523F-AFBD-4E49-9223-9CA710F41897}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +22,14 @@ Global
 		{FE7F73BB-ECC4-436C-B028-B517A43B5360}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE7F73BB-ECC4-436C-B028-B517A43B5360}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE7F73BB-ECC4-436C-B028-B517A43B5360}.Release|Any CPU.Build.0 = Release|Any CPU
-		{76773448-6E4A-455C-88E4-EAA9A52B08F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{76773448-6E4A-455C-88E4-EAA9A52B08F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{76773448-6E4A-455C-88E4-EAA9A52B08F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{76773448-6E4A-455C-88E4-EAA9A52B08F4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8EAE523F-AFBD-4E49-9223-9CA710F41897}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8EAE523F-AFBD-4E49-9223-9CA710F41897}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EAE523F-AFBD-4E49-9223-9CA710F41897}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EAE523F-AFBD-4E49-9223-9CA710F41897}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DC3FDA2-7BA4-4185-AFD5-D51A5942C2A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DC3FDA2-7BA4-4185-AFD5-D51A5942C2A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DC3FDA2-7BA4-4185-AFD5-D51A5942C2A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DC3FDA2-7BA4-4185-AFD5-D51A5942C2A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

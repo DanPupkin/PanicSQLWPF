@@ -55,3 +55,16 @@ JOIN matan ON students.student_id = matan.student_id JOIN algebra ON students.st
 JOIN proga ON students.student_id = proga.student_id
 WHERE students.student_id = 1;
 SELECT student_name, password_md5 FROM students WHERE student_name = 'pavel' AND password_md5 = 'e10adc3949ba59abbe56e057f20f883e';
+
+
+CREATE TABLE IF NOT EXISTS borba
+(
+	student_id int REFERENCES students(student_id) ON DELETE CASCADE,
+	discipline_status bool DEFAULT false
+);
+INSERT INTO borba (student_id, discipline_status)
+ SELECT 1, true
+ WHERE NOT EXISTS (SELECT student_id FROM borba WHERE student_id =1);
+ SELECT * FROM students;
+ SELECT * FROM borba;
+ UPDATE 

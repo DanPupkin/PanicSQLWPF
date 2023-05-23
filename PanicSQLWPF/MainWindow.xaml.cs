@@ -6,16 +6,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using LogicLibrary;
 using XamlAnimatedGif;
 using System.IO;
-
+using System.Globalization;
+using ViewModel;
+using System.Diagnostics;
 
 namespace PanicSQLWPF_Windows
 {
@@ -29,26 +24,19 @@ namespace PanicSQLWPF_Windows
         public MainWindow()
         {
             InitializeComponent();
-            //this.Hide();
-            
-            AuthLogic auth = new AuthLogic();
+
+            StandartViewModel VM = new StandartViewModel();
             authTab = new AuthTab();
-            //studentsSystem = new StudentsSystem();
-            //studentsSystem.DataContext= vm;
-            //studentsSystem.Show();
             authTab.Show();
-            DataContext = auth;
-            authTab.DataContext = auth;
+            DataContext = VM;
+            authTab.DataContext = VM;
             
-
-
-
             this.Closing += Window_Closing;
 
 
-            if (auth.CloseAction == null)
+            if (VM.CloseAction == null)
             {
-                auth.CloseAction = new Action(authTab.Close);
+                VM.CloseAction = new Action(authTab.Close);
             }
 
         }
@@ -58,13 +46,21 @@ namespace PanicSQLWPF_Windows
             Application.Current.Shutdown();
         }
 
-        
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
-    class BoolToColorConverter: IValueConverter
+    public class BoolToColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return ;
+            if ((bool)value)
+            {
+                Trace.WriteLine(value.ToString());
+                return "Green";
+            }
+            return "Red";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -72,4 +68,6 @@ namespace PanicSQLWPF_Windows
             return DependencyProperty.UnsetValue;
         }
     }
+
+
 }

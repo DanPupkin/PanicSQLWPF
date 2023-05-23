@@ -4,21 +4,48 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PanicSQLWPF_Windows"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <local:BoolToColorConverter x:Key="ColorConverter"></local:BoolToColorConverter>
+    </Window.Resources>
     <Grid>
-        <Button  Content="Загрузить данные" HorizontalAlignment="Left" Margin="389,353,0,0" VerticalAlignment="Top" Height="44" Width="94"/>
-        <TextBox HorizontalAlignment="Left" Height="35" Margin="504,375,0,0" TextWrapping="Wrap" Text="{Binding login}" VerticalAlignment="Top" Width="256"/>
-        <ListBox x:Name="listbox" ItemsSource="{Binding Disciplines}" RenderTransformOrigin="0.498,0.498" Height="300" Width="300" Margin="23,31,477,103" >
+        <Button  Content="Изменить статус" Command="{Binding ChangeCommand}" HorizontalAlignment="Left" Margin="229,342,0,0" VerticalAlignment="Top" Height="33" Width="94"/>
+        <Button  Content="Удалить" Command="{Binding DeleteCommand}" HorizontalAlignment="Left" Margin="229,380,0,0" VerticalAlignment="Top" Height="33" Width="94"/>
+        <TextBox HorizontalAlignment="Left" Height="22" Margin="23,375,0,0" TextWrapping="Wrap" Text="{Binding login}" VerticalAlignment="Top" Width="150"/>
+        <ListBox x:Name="listbox" ItemsSource="{Binding Disciplines}" SelectedItem="{Binding SelectedDiscipline, UpdateSourceTrigger=PropertyChanged}" RenderTransformOrigin="0.498,0.498" Height="300" Width="300" Margin="23,31,477,103" >
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Margin="5">
-                        <Rectangle Fill="Aqua" Width="20" Height="20"></Rectangle>
-                        <TextBlock FontSize="18" Text="{Binding Name}" Margin="5" />
+                        <Grid>
+                            <TextBlock FontSize="18" Text="{Binding Name}" Margin="5" />
+                            <Rectangle Fill="{Binding Status, Converter={StaticResource ColorConverter}}" Width="20" Height="10" HorizontalAlignment="Right" Margin="100,0,0,0" ></Rectangle>
+                        </Grid>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+        <Label Content="User:" HorizontalAlignment="Left" Margin="23,342,0,0" VerticalAlignment="Top" Height="33" Width="111"/>
+        <Grid RenderTransformOrigin="0.489,0.546" Margin="400,31,88,222">
+            <Button Content="Отфилтровать" Command="{Binding FilterCommand}" HorizontalAlignment="Left" Margin="20,123,0,0" VerticalAlignment="Top"/>
+            <RadioButton Content="Все" GroupName="Filter" HorizontalAlignment="Left" Margin="20,10,0,0" VerticalAlignment="Top" IsChecked="{Binding AllButtonIsChecked, Mode=TwoWay}" />
+            <RadioButton Content="Закрытые" GroupName="Filter" HorizontalAlignment="Left" Margin="20,40,0,0" VerticalAlignment="Top" IsChecked="{Binding PassedButtonIsChecked, Mode=TwoWay}" />
+            <RadioButton Content="Незакрытые" GroupName="Filter" HorizontalAlignment="Left" Margin="20,70,0,0" VerticalAlignment="Top" IsChecked="{Binding NotPassedButtonIsChecked, Mode=TwoWay}" Checked="RadioButton_Checked"/>
+        </Grid>
+        <Grid Margin="400,217,100,48">
+            <ComboBox HorizontalAlignment="Left" Margin="124,0,0,0" VerticalAlignment="Center" Width="120" SelectedItem="{Binding NewDisciplineStatus}" >
+                <sys:Boolean>True</sys:Boolean>
+                <sys:Boolean>False</sys:Boolean>
 
+            </ComboBox>
+            <TextBox HorizontalAlignment="Left" Text="{Binding NewDisciplineName}" Margin="124,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+            <Button Content="Добавить" Command="{Binding AddDiscCommand}" HorizontalAlignment="Left" Margin="150,113,0,0" VerticalAlignment="Top" Width="62" Height="30"/>
+
+
+
+        </Grid>
+        <Button Content="Сохранить" Command="{Binding SaveDiscCommand}" HorizontalAlignment="Left" Margin="434,396,0,0" VerticalAlignment="Top" Width="131"/>
     </Grid>
+
 </Window>

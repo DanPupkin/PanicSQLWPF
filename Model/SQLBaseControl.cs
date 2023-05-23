@@ -85,6 +85,48 @@ namespace Model
 
             return result;
         }
+        async public Task SaveDisciplines(int id, ObservableCollection<Discipline> disciplines, string name, string MD5)
+        {
+            string sql = $"";
+
+            string[] disp_list = new string[disciplines.Count];
+            
+            int i = 0;
+            foreach (Discipline discipline in disciplines)
+            {
+                 sql = $"CREATE TABLE IF NOT EXISTS {discipline.Name} (student_id int REFERENCES students(student_id) ON DELETE CASCADE, discipline_status bool DEFAULT false)";
+                using var cmd = new NpgsqlCommand(sql, con);
+                disp_list[i++] = discipline.Name;
+                cmd.ExecuteNonQuery();
+            }
+            foreach (Discipline discipline in disciplines)
+            {
+                 sql = $"INSERT INTO {discipline.Name} (student_id, discipline_status) SELECT {id}, {discipline.Status} WHERE NOT EXISTS (SELECT student_id FROM {discipline.Name} WHERE student_id = {id})";
+                using var cmd2 = new NpgsqlCommand(sql, con);
+
+                cmd2.ExecuteNonQuery();
+            }
+            foreach (Discipline discipline in disciplines)
+            {
+                sql = $"UPDATE {discipline.Name} SET discipline_status = {discipline.Status} WHERE student_id = {id}";
+                using var cmd4 = new NpgsqlCommand(sql, con);
+
+                cmd4.ExecuteNonQuery();
+            }
+            string sub_str = "{\"";
+            foreach (string str in disp_list)
+            {
+                sub_str += $"{str}, ";
+            }
+            sub_str = sub_str.TrimEnd().TrimEnd(',')+"\"}";
+            //{"matan, algebra, proga"}
+            sql = $"UPDATE students SET student_disciplines = '{sub_str}' WHERE student_id = {id}";
+            using var cmd3 = new NpgsqlCommand(sql, con);
+            Trace.WriteLine(sub_str);
+            cmd3.ExecuteNonQuery();
+            //con.Close();
+
+        }
     }
     class LoadException : Exception
     {
