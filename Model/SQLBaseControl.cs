@@ -16,6 +16,7 @@ namespace Model
         public SQLBaseControl()
         {
             var cs = "Host=localhost;Username=postgres;Password=Duster2019;Database=Panic";
+            //var cs = "Host=193.218.138.69;Username=Guest;Password=Secret228;Database=Panic";
 
             this.con = new NpgsqlConnection(cs);
             con.Open();
