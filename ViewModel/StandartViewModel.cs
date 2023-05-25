@@ -1,32 +1,28 @@
-using System;
-using System.ComponentModel;
-using System.Threading.Tasks;
-using CommunityToolkit.Mvvm;
 using CommunityToolkit.Mvvm.Input;
 using Model;
-using CommunityToolkit.Common;
+using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Globalization;
-using System.Windows.Data;
-using System.Windows;
+using System.Threading.Tasks;
 
 
 namespace ViewModel
 {
     public class StandartViewModel
     {
-        public string login { get; set; }
-        public string password { get; set; }
-        public int Id { get; set; }
+        //public string login { get; set; }
+        //public string password { get; set; }
+        //public int student.Id { get; set; }
+        public Student student { get; set; }= new Student();
         public string NewDisciplineName { get; set; }
         public bool NewDisciplineStatus { get; set; }
 
         public ObservableCollection<Discipline> Disciplines { set; get; } = new ObservableCollection<Discipline>();
-        public ObservableCollection<Discipline> FullDisciplines { set; get; } = new ObservableCollection<Discipline>();
+        //public ObservableCollection<Discipline> student.Disciplines { set; get; } = new ObservableCollection<Discipline>();
         public Discipline SelectedDiscipline { get; set; }
         public (string[], int) AuthInfo { set; get; }
-        
+
         SQLBaseControl control { get; set; } = new SQLBaseControl();
         private bool allButtonIsChecked = true;
 
@@ -36,7 +32,7 @@ namespace ViewModel
             set
             {
                 allButtonIsChecked = value;
-                
+
             }
         }
         private bool passedButtonIsChecked;
@@ -47,7 +43,7 @@ namespace ViewModel
             set
             {
                 passedButtonIsChecked = value;
-                
+
             }
         }
         private bool notPassedButtonIsChecked;
@@ -58,7 +54,7 @@ namespace ViewModel
             set
             {
                 notPassedButtonIsChecked = value;
-                
+
             }
         }
         public event PropertyChangedEventHandler CollectionChanged;
@@ -102,8 +98,8 @@ namespace ViewModel
         {
 
             CloseAction();
-            AuthInfo = await control.Login(this.login, CreateMD5(this.password));
-            
+            (student.BaseDisp, student.Id) = await control.Login(student.Name, student.MD5.ToLower());
+
             try
             {
                 SQLLoadCommand.Execute(new object());// спорно, может стоит переделать
@@ -125,10 +121,10 @@ namespace ViewModel
 
         async private Task LoadCommand()
         {
-            FullDisciplines = await control.ReadDisciplines(AuthInfo);
+            student.Disciplines = await control.ReadDisciplines((student.BaseDisp, student.Id));
             //Disciplines = await control.ReadDisciplines(AuthInfo);
-            Id = AuthInfo.Item2;
-            foreach (var x in FullDisciplines)
+            //student.Id = AuthInfo.Item2;
+            foreach (var x in student.Disciplines)
             {
                 Disciplines.Add(x);
             }
@@ -140,9 +136,9 @@ namespace ViewModel
 
         async private Task ChangeStatusCommand()
         {
-            if(SelectedDiscipline.Status)
+            if (SelectedDiscipline.Status)
             {
-                SelectedDiscipline.Status=false;
+                SelectedDiscipline.Status = false;
             }
             else
             {
@@ -154,7 +150,7 @@ namespace ViewModel
 
         async private Task DeleteDisciplineCommand()
         {
-            FullDisciplines.Remove(SelectedDiscipline);
+            student.Disciplines.Remove(SelectedDiscipline);
             FilterCommand.Execute(new object());
 
         }
@@ -163,7 +159,7 @@ namespace ViewModel
 
         async private Task AddDisciplineCommand()
         {
-            FullDisciplines.Add(new Discipline(NewDisciplineName, NewDisciplineStatus));
+            student.Disciplines.Add(new Discipline(NewDisciplineName, NewDisciplineStatus));
             FilterCommand.Execute(new object());
 
         }
@@ -171,29 +167,29 @@ namespace ViewModel
 
         async private Task SaveDisciplineCommand()
         {
-           await control.SaveDisciplines(Id, FullDisciplines, login, CreateMD5(this.password));
+            await control.SaveDisciplines(student.Id, student.Disciplines, student.Name, student.MD5.ToLower());
 
         }
 
         public IAsyncRelayCommand FilterCommand { get; }
 
-         private async Task FilterDisciplinesCommand()
+        private async Task FilterDisciplinesCommand()
         {
             Disciplines.Clear();
             if (AllButtonIsChecked)
             {
-                
-                foreach (Discipline item in FullDisciplines)
+
+                foreach (Discipline item in student.Disciplines)
                 {
-                    
-                        Disciplines.Add(item);
-                    
+
+                    Disciplines.Add(item);
+
                 }
             }
-            else if(PassedButtonIsChecked)
+            else if (PassedButtonIsChecked)
             {
 
-                foreach (Discipline item in FullDisciplines)
+                foreach (Discipline item in student.Disciplines)
                 {
                     if (item.Status)
                     {
@@ -203,8 +199,8 @@ namespace ViewModel
             }
             else
             {
-                
-                foreach (Discipline item in FullDisciplines)
+
+                foreach (Discipline item in student.Disciplines)
                 {
                     if (!item.Status)
                     {

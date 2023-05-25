@@ -1,16 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using XamlAnimatedGif;
-using System.IO;
-using System.Globalization;
-using ViewModel;
 using System.Diagnostics;
+using System.Globalization;
+using System.Windows;
+using System.Windows.Data;
+using ViewModel;
 
 namespace PanicSQLWPF_Windows
 {
@@ -20,17 +13,17 @@ namespace PanicSQLWPF_Windows
     public partial class MainWindow : Window
     {
         AuthTab authTab;
-        
+
         public MainWindow()
         {
             InitializeComponent();
 
             StandartViewModel VM = new StandartViewModel();
-            authTab = new AuthTab();
+            authTab = new AuthTab(VM);
             authTab.Show();
             DataContext = VM;
-            authTab.DataContext = VM;
             
+
             this.Closing += Window_Closing;
 
 

@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Model
 {
-    public class Discipline: INotifyPropertyChanged
+    public class Discipline : INotifyPropertyChanged
     {
         public string Name { get; set; }
         private bool status;
